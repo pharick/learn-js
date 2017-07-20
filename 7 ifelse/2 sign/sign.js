@@ -1,4 +1,4 @@
-var number = +prompt('Введите число', 0);
+var number = +prompt('Введите число', '0');
 
 if (number > 0) {
   alert('1');
