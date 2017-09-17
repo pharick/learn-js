@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    // function createTree(container, data) {
+    //   var tree = '<ul>';
+    //
+    //   function recurceTree(data) {
+    //     for(item in data) {
+    //       tree += ('<li>' + item);
+    //       if (Object.keys(data[item]).length != 0) {
+    //         tree += '<ul>';
+    //         recurceTree(data[item]);
+    //         tree += '</ul>';
+    //       }
+    //       tree += '</li>'
+    //     }
+    //   }
+    //
+    //   recurceTree(data);
+    //   tree += '</ul>';
+    //   container.innerHTML = tree;
+    // }
+
+    function createTree(container, data) {
+      let ul = document.createElement('ul');
+
+      for(item in data) {
+        let li = document.createElement('li');
+        li.innerHTML = item;
+        ul.appendChild(li);
+
+        if (Object.keys(data[item]).length != 0) {
+          createTree(li, data[item]);
+        }
+      }
+
+      container.appendChild(ul);
+    }
+
+    var data = {
+      "Рыбы": {
+        "Форель": {},
+        "Щука": {}
+      },
+
+      "Деревья": {
+        "Хвойные": {
+          "Лиственница": {},
+          "Ель": {}
+        },
+
+        "Цветковые": {
+          "Берёза": {},
+          "Тополь": {}
+        }
+      }
+    };
+
+    createTree(container, data);
+  </script>
+</body>
+
+</html>
