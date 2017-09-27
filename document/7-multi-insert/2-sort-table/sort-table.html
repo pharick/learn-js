@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <table>
+    <thead>
+      <th>Имя</th>
+      <th>Фамилия</th>
+      <th>Отчество</th>
+      <th>Возраст</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>16</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>32</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>54</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>18</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>22</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>25</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>30</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>31</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Отчество</td>
+        <td>45</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    var table = document.querySelector('table');
+    var tbody = table.removeChild(table.querySelector('tbody'));
+    var rows = tbody.getElementsByTagName('tr');
+    var rowsObjects = [];
+
+    for (var i = 0; i < rows.length; i++) {
+      rowsObjects.push({elem: rows[i], age: rows[i].querySelector('td:last-child').innerHTML});
+    }
+
+    rowsObjects.sort((a, b) => a.age - b.age);
+
+    for (var i = 0; i < rowsObjects.length; i++) {
+      tbody.appendChild(rowsObjects[i].elem);
+    }
+
+    table.appendChild(tbody);
+  </script>
+</body>
+</html>
