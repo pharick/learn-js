@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    .notification {
+      background-color: midnightblue;
+      color: white;
+      padding: 20px 40px;
+      position: absolute;
+      border-radius: 5px;
+    }
+
+    .welcome {
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Уведомление</h1>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum aspernatur quam ex eaque inventore quod voluptatem adipisci omnis nemo nulla fugit iste numquam ducimus cumque minima porro ea quidem maxime necessitatibus beatae labore soluta voluptatum magnam consequatur sit laboriosam velit excepturi laborum sequi eos placeat et quia deleniti? Corrupti velit impedit autem et obcaecati fuga debitis nemo ratione iste veniam amet dicta hic ipsam unde cupiditate incidunt aut iure ipsum officiis soluta temporibus. Tempore dicta ullam delectus numquam consectetur quisquam explicabo culpa excepturi placeat quo sequi molestias reprehenderit hic at nemo cumque voluptates quidem repellendus maiores unde earum molestiae ad.</p>
+
+  <script>
+    function showNotification(options) {
+      var notification = document.createElement('div');
+
+      notification.innerHTML = options.html;
+
+      notification.classList.add('notification');
+      if (options.className) notification.classList.add(options.className);
+
+      notification.style.top = (options.top || 0) + 'px';
+      notification.style.right = (options.right || 0) + 'px';
+
+      document.body.insertBefore(notification, document.body.firstChild);
+      setTimeout(() => notification.remove(), 1500);
+    }
+
+    showNotification({
+      html: 'Привет',
+      top: 15,
+      right: 10,
+      className: 'welcome'
+    });
+  </script>
+</body>
+</html>
