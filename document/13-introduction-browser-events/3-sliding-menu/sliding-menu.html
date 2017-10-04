@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sliding menu</title>
+
+    <style>
+      .dropdown-list {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li class="dropdown-item">
+        <a href="#" id="sweets">Сладости</a>
+        <ul class="dropdown-list">
+          <li>Торт</li>
+          <li>Пончик</li>
+          <li>Пирожное</li>
+        </ul>
+      </li>
+    </ul>
+
+    <script>
+      function showDropdown() {
+        var dropdown = this.nextElementSibling;
+        dropdown.style.display = (dropdown.style.display == 'none') ? 'block' : 'none';
+      }
+
+      sweets.addEventListener('click', showDropdown);
+    </script>
+  </body>
+</html>
