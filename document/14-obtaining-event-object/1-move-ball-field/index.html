@@ -1,49 +1,47 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <title>Move ball</title>
+    <style>
+      #field {
+        width: 500px;
+        height: 500px;
+        background-color: green;
+        border: 5px solid black;
+        position: relative;
+        overflow: hidden;
+      }
 
-<head>
-  <meta charset="utf-8">
-  <style>
-    #field {
-      width: 200px;
-      height: 150px;
-      border: 10px solid black;
-      background-color: #00FF00;
-      position: relative;
-      overflow: hidden;
-    }
+      #ball {
+        position: absolute;
+        transition: left 1s, top 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="field">
+      <img src="ball.svg" id="ball">
+    </div>
 
-    #ball {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-left: -20px;
-      margin-top: -20px;
-    }
-  </style>
-</head>
+    <script>
+      function moveBall(event) {
+        var fieldCoords = field.getBoundingClientRect();
+        var ballCoords = {
+          left: event.clientX - fieldCoords.left - field.clientLeft - ball.clientWidth / 2,
+          top: event.clientY - fieldCoords.top - field.clientTop - ball.clientHeight / 2
+        }
 
-<body style="height:2000px">
+        if (ballCoords.left < 0) ballCoords.left = 0;
+        if (ballCoords.top < 0) ballCoords.top = 0;
+        if (ballCoords.top + ball.clientHeight > field.clientHeight) ballCoords.top = field.clientHeight - ball.clientHeight;
+        if (ballCoords.left + ball.clientWidth > field.clientWidth) ballCoords.left = field.clientWidth - ball.clientWidth;
 
-  Кликните на любое место поля, чтобы мяч перелетел туда.
-  <br> Мяч никогда не вылетит за границы поля.
+        ball.style.left = ballCoords.left + 'px';
+        ball.style.top = ballCoords.top + 'px';
+      }
 
-
-  <div id="field">
-    <img src="https://js.cx/clipart/ball.svg" id="ball" width="40" height="40">
-  </div>
-
-  <script>
-    function moveBall(event) {
-      var fieldCoords = field.getBoundingClientRect();
-      ball.style.left = event.clientX - fieldCoords.left - field.clientLeft + 'px';
-      ball.style.top = event.clientY - fieldCoords.top - field.clientTop + 'px';
-
-      if (ball.style.top < 0) ball.style.top = 0;
-    }
-
-    field.addEventListener('click', moveBall);
-  </script>
-</body>
-
+      field.addEventListener('click', moveBall);
+    </script>
+  </body>
 </html>
