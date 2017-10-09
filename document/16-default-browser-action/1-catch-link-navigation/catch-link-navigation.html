@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Catch link</title>
+</head>
+<body>
+  <fieldset id="contents">
+    <legend>#contents</legend>
+    <p>Как насчет почитать <a href="http://wikipedia.org">Википедию</a>, или посетить <a href="http://w3.org"><i>W3.org</i></a> и узнать про современные стандарты?</p>
+  </fieldset>
+  <script>
+    function checkOpen(event) {
+      var target = event.target;
+
+      function handleLink(link) {
+        var open = confirm("Перейти на " + link + '?');
+        if (!open) event.preventDefault();
+      }
+
+      while (target != contents) {
+        if (target.tagName == 'A') {
+          return handleLink(target.getAttribute('href'));
+        }
+
+        target = target.parentNode;
+      }
+    }
+
+    contents.addEventListener('click', checkOpen);
+  </script>
+</body>
+</html>

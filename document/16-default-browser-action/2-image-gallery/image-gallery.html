@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery</title>
+  <style>
+    #thumbs {
+      padding: 0;
+    }
+
+    #thumbs li {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div id="largeImage">
+    <img src="https://js.cx/gallery/img1-lg.jpg" alt="Large image">
+  </div>
+
+  <ul id="thumbs">
+    <li><a href="https://js.cx/gallery/img2-lg.jpg" title="Image 2"><img src="https://js.cx/gallery/img2-thumb.jpg"></a></li>
+    <li><a href="https://js.cx/gallery/img3-lg.jpg" title="Image 3"><img src="https://js.cx/gallery/img3-thumb.jpg"></a></li>
+    <li><a href="https://js.cx/gallery/img4-lg.jpg" title="Image 4"><img src="https://js.cx/gallery/img4-thumb.jpg"></a></li>
+    <li><a href="https://js.cx/gallery/img5-lg.jpg" title="Image 5"><img src="https://js.cx/gallery/img5-thumb.jpg"></a></li>
+    <li><a href="https://js.cx/gallery/img6-lg.jpg" title="Image 6"><img src="https://js.cx/gallery/img6-thumb.jpg"></a></li>
+  </ul>
+
+  <script>
+    function chooseImage(src) {
+      largeImage.getElementsByTagName('img')[0].src = src;
+    }
+
+    var thumbsList = thumbs.getElementsByTagName('a');
+    for (var i = 0; i < thumbsList; i++) {
+      var image = document.createElement('img');
+      image.src = thumbsList[i].href;
+    }
+
+    thumbs.onclick = function(event) {
+      var target = event.target;
+      if (target.tagName !== 'IMG') return;
+      chooseImage(target.parentNode.href);
+      return false;
+    };
+  </script>
+</body>
+</html>
