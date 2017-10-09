@@ -54,14 +54,14 @@
   </table>
 
   <script>
-    function sortingTable(table) {
+    function SortingTable(table) {
       this.sortTable = function(type, colIndex) {
         function sortNumber(a, b) {
           return a.sortingValue - b.sortingValue;
         }
 
         function sortString(a, b) {
-          return (a.sortingValue > b.sortingValue) ? true : false;
+          return a.sortingValue > b.sortingValue;
         }
 
         var tbody = table.removeChild(table.querySelector('tbody'));
@@ -72,8 +72,8 @@
           rowsObjects.push({elem: rows[i], sortingValue: rows[i].cells[colIndex].innerHTML});
         }
 
-        if (type == 'number') rowsObjects.sort(sortNumber);
-        if (type == 'string') rowsObjects.sort(sortString);
+        if (type === 'number') rowsObjects.sort(sortNumber);
+        if (type === 'string') rowsObjects.sort(sortString);
 
         for (var i = 0; i < rowsObjects.length; i++) {
           tbody.appendChild(rowsObjects[i].elem);
@@ -85,13 +85,13 @@
 
       table.onclick = function(e) {
         var target = e.target;
-        if (target.tagName != 'TH') return;
+        if (target.tagName !== 'TH') return;
         var type = target.dataset.type;
         self.sortTable(type, target.cellIndex);
       }
     }
 
-    new sortingTable(grid);
+    new SortingTable(grid);
   </script>
 
 </body>
