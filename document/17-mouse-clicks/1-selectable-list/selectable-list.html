@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Selectable list</title>
+    <style>
+        #list li {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <ul id="list">
+        <li>Кристофер Робин</li>
+        <li>Винни-Пух</li>
+        <li>Ослик Иа</li>
+        <li>Мудрая Сова</li>
+        <li>Кролик. Просто кролик</li>
+    </ul>
+
+    <script>
+        var listItems = list.getElementsByTagName('li');
+        var lastSelectedItem = null;
+
+        function selectListItem(event) {
+            function clearSelection() {
+                for (var i = 0; i < listItems.length; i++) {
+                    listItems[i].style.backgroundColor = 'white';
+                }
+            }
+
+            function selectRangeOfItems() {
+                var startElement = lastSelectedItem || listItems[0];
+                var isStartBefore = (startElement.compareDocumentPosition(target) == 4);
+
+                if (isStartBefore) {
+                    for (var element = startElement; element != target; element = element.nextElementSibling) {
+                        element.style.backgroundColor = 'green';
+                    }
+                } else {
+                    for (var element = startElement; element != target; element = element.previousElementSibling) {
+                        element.style.backgroundColor = 'green';
+                    }
+                }
+
+                target.style.backgroundColor = 'green';
+            }
+
+            var target = event.target;
+
+            if (target.tagName != 'LI') return;
+
+            if (!event.ctrlKey && !event.metaKey && !event.shiftKey) clearSelection();
+
+            if (event.shiftKey) {
+                selectRangeOfItems();
+            } else {
+                target.style.backgroundColor = 'green';
+            }
+
+            lastSelectedItem = target;
+        }
+
+        list.addEventListener('click', selectListItem);
+        list.addEventListener('mousedown', function(event) { event.preventDefault(); })
+    </script>
+</body>
+</html>
