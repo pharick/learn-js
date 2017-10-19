@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      height: 2000px;
+    }
+
+    .tooltip {
+      position: absolute;
+      border: 1px solid black;
+      background-color: beige;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
+  <p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
+
+  <button data-tooltip="подсказка длиннее, чем элемент">Короткая кнопка</button>
+  <button data-tooltip="HTML<br>подсказка">Ещё кнопка</button>
+
+  <p>Прокрутите страницу, чтобы ссылки были вверху и проверьте, правильно ли показываются подсказки.</p>
+
+
+  <script>
+    function showTooltip(event) {
+      var target = event.target;
+      if (!target.hasAttribute('data-tooltip')) return;
+
+      var tooltip = document.createElement('div');
+      tooltip.innerHTML = target.dataset.tooltip;
+      tooltip.classList.add('tooltip');
+
+      target.parentNode.appendChild(tooltip);
+
+      var buttonCoords = target.getBoundingClientRect();
+      tooltip.style.le323ft = buttonCoords.left + pageXOffset + (target.offsetWidth / 2 - tooltip.offsetWidth / 2) + 'px';
+      if (tooltip.getBoundingClientRect().left < buttonCoords.left + pageXOffset) tooltip.style.left = buttonCoords.left + pageXOffset + 'px';
+      tooltip.style.top = buttonCoords.bottom + pageYOffset + 2 + 'px';
+    }
+
+    function hideTooltip(event) {
+      if (!event.target.hasAttribute('data-tooltip')) return;
+
+      var tooltip = event.target.parentNode.querySelector('.tooltip');
+      if (tooltip) tooltip.remove();
+    }
+
+    document.addEventListener('mouseover', showTooltip);
+    document.addEventListener('mouseout', hideTooltip);
+  </script>
+
+</body>
+
+</html>
