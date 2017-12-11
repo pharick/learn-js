@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <button type="button" name="button" id="btn">Я кнопка!</button>
+
+    <script>
+      function HoverIntent(options) {
+        options = Object.create(options);
+        options.interval = options.interval || 100;
+        options.sensitivity = options.sensitivity || 0.1;
+
+        var elem = options.elem;
+        var cX, cY, pX, pY, cTime, pTime;
+        var checkSpeedInterval;
+        var isOverElement;
+        var isHover;
+
+        elem.addEventListener('mouseover', onMouseOver);
+        elem.addEventListener('mouseout', onMouseOut);
+
+        function onMouseOver(event) {
+          if (isOverElement) return;
+
+          isOverElement = true;
+
+          pX = event.pageX;
+          pY = event.pageY;
+          pTime = Date.now();
+
+          elem.addEventListener('mousemove', onMousemove);
+          checkSpeedInterval = setInterval(trackSpeed, options.interval);
+
+          function trackSpeed() {
+            let speed;
+
+            if (!cTime || cTime == pTime) {
+              speed = 0;
+            } else {
+              speed = Math.sqrt(Math.pow(pX - cX, 2) + Math.pow(pY - cY)) / (cTime - pTime);
+            }
+
+            if (speed < options.sensitivity) {
+              clearInterval(checkSpeedInterval);
+              isHover = true;
+              options.over.call(elem, event);
+            } else {
+              pX = cX;
+              pY = cY;
+              pTime = cTime;
+            }
+          }
+        }
+
+        function onMouseOut(event) {
+          if (!event.relatedTarget || !elem.contains(event.relatedTarget)) {
+            isOverElement = false;
+            elem.removeEventListener('mousemove', onMousemove);
+            clearInterval(checkSpeedInterval);
+
+            if (isHover) {
+              options.out.call(elem, event);
+              isHover = false;
+            }
+          }
+        }
+
+        function onMousemove(event) {
+          cX = event.pageX;
+          cY = event.pageY;
+          cTime = Date.now();
+        }
+
+        this.destroy = function() {
+          elem.removeEventListener('mousemove', onMousemove);
+          elem.removeEventListener('mouseover', onMouseOver);
+          elem.removeEventListener('mouseout', onMouseOut);
+        }
+      }
+
+      var tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.innerHTML = 'Подсказка';
+
+      new HoverIntent({
+        elem: btn,
+        over: function() {
+          tooltip.style.left = this.getBoundingClientRect().left + 'px';
+          tooltip.style.top = this.getBoundingClientRect().bottom + 5 + 'px';
+          document.body.appendChild(tooltip);
+        },
+        out: function() {
+          document.body.removeChild(tooltip);
+        }
+      });
+    </script>
+  </body>
+</html>
