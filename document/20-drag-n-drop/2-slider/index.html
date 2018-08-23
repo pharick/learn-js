@@ -9,7 +9,7 @@
         }
 
         .slider {
-            width: 300px;
+            width: 350px;
             height: 20px;
             margin: 0 auto;
             background-color: cadetblue;
@@ -30,33 +30,52 @@
 
 <body>
     <div id="slider" class="slider">
-        <div id="thumb" class="thumb"></div>
+        <div class="thumb"></div>
     </div>
 
     <script>
-        const slider = document.getElementById("slider");
-        const thumb = document.getElementById("thumb");
-
-        thumb.addEventListener("mousedown", () => {
-            document.addEventListener("mousemove", moveThumb);
-        });
-
-        document.addEventListener("mouseup", () => {
-            document.removeEventListener("mousemove", moveThumb);
-        });
-
-        function moveThumb(e) {
-            const sliderPosition = slider.getBoundingClientRect();
-            let left = e.clientX - sliderPosition.left;
+        function Slider(elem, { min = 0, max = 100, val = 0 } = {}) {
+            const slider = elem;
+            const thumb = slider.querySelector(".thumb");
             
-            if (left < 0) {
-                left = 0;
-            } else if (left > slider.offsetWidth - thumb.offsetWidth) {
-                left = slider.offsetWidth - thumb.offsetWidth;
+            const stepWidth = (slider.offsetWidth - thumb.offsetWidth) / (max - min);
+
+            if (val < min) val = min;
+            else if (val > max) val = max;
+
+            setVal(val);
+
+            thumb.addEventListener("mousedown", () => {
+                document.addEventListener("mousemove", moveThumb);
+            });
+
+            document.addEventListener("mouseup", () => {
+                document.removeEventListener("mousemove", moveThumb);
+            });
+            
+            function moveThumb(e) {
+                let left = e.clientX - slider.getBoundingClientRect().left - thumb.offsetWidth / 2;
+                
+                if (left < 0) {
+                    left = 0;
+                } else if (left > slider.offsetWidth - thumb.offsetWidth) {
+                    left = slider.offsetWidth - thumb.offsetWidth;
+                }
+                
+                thumb.style.left = left + "px";
+                val = Math.round(left / stepWidth + min);
             }
-            
-            thumb.style.left = left + "px";
+
+            function setVal(n) {
+                thumb.style.left = (n - min) * stepWidth + "px";
+            }
+
+            function getVal() {
+                return val;
+            }
         }
+
+        const slider = new Slider(document.getElementById("slider"), { min: 40, max: 120 });
     </script>
 </body>
 </html>
