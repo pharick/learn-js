@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ball</title>
+    <style>
+        .field {
+            border: 1px solid black;
+            width: 600px;
+            height: 400px;
+            position: relative;
+        }
+
+        .ball {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="field" class="field">
+        <img id="ball" class="ball" src="ball.svg" alt="Ball">
+    </div>
+
+    <script>
+        const field = document.getElementById("field");
+        const ball = document.getElementById("ball");
+
+        ball.ondragstart = () => false;
+
+        ball.addEventListener("mousedown", () => {
+            field.addEventListener("mousemove", moveAt);
+        });
+
+
+        ball.addEventListener("mouseup", () => {
+            field.removeEventListener("mousemove", moveAt);
+        });
+
+        function moveAt(e) {
+            ball.style.left = e.pageX - field.offsetLeft - ball.offsetWidth / 2 + "px";
+            ball.style.top = e.pageY - field.offsetTop - ball.offsetHeight / 2 + "px";
+        }
+    </script>
+</body>
+</html>

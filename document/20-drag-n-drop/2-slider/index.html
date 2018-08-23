@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Slider</title>
+    <style>
+        body {
+            margin: 100px;
+        }
+
+        .slider {
+            width: 300px;
+            height: 20px;
+            margin: 0 auto;
+            background-color: cadetblue;
+            position: relative;
+        }
+
+        .thumb {
+            width: 20px;
+            height: 20px;
+            background-color: deeppink;
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="slider" class="slider">
+        <div id="thumb" class="thumb"></div>
+    </div>
+
+    <script>
+        const slider = document.getElementById("slider");
+        const thumb = document.getElementById("thumb");
+
+        thumb.addEventListener("mousedown", () => {
+            document.addEventListener("mousemove", moveThumb);
+        });
+
+        document.addEventListener("mouseup", () => {
+            document.removeEventListener("mousemove", moveThumb);
+        });
+
+        function moveThumb(e) {
+            const sliderPosition = slider.getBoundingClientRect();
+            let left = e.clientX - sliderPosition.left;
+            
+            if (left < 0) {
+                left = 0;
+            } else if (left > slider.offsetWidth - thumb.offsetWidth) {
+                left = slider.offsetWidth - thumb.offsetWidth;
+            }
+            
+            thumb.style.left = left + "px";
+        }
+    </script>
+</body>
+</html>
