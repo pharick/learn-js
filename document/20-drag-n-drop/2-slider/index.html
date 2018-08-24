@@ -29,53 +29,77 @@
 </head>
 
 <body>
-    <div id="slider" class="slider">
-        <div class="thumb"></div>
-    </div>
+    <div id="slider" class="slider"></div>
 
     <script>
-        function Slider(elem, { min = 0, max = 100, val = 0 } = {}) {
-            const slider = elem;
-            const thumb = slider.querySelector(".thumb");
-            
-            const stepWidth = (slider.offsetWidth - thumb.offsetWidth) / (max - min);
+        class Slider {
+            constructor(elem, { min = 0, max = 100, initVal = 0 } = {}, onChange = null) {
+                this._slider = elem;
+                this._options = { min, max };
+                this._onChange = onChange;
 
-            if (val < min) val = min;
-            else if (val > max) val = max;
+                // Создаем ползунок
+                this._thumb = document.createElement("div");
+                this._thumb.className = "thumb";
+                this._slider.appendChild(this._thumb);
 
-            setVal(val);
-
-            thumb.addEventListener("mousedown", () => {
-                document.addEventListener("mousemove", moveThumb);
-            });
-
-            document.addEventListener("mouseup", () => {
-                document.removeEventListener("mousemove", moveThumb);
-            });
-            
-            function moveThumb(e) {
-                let left = e.clientX - slider.getBoundingClientRect().left - thumb.offsetWidth / 2;
+                // Вычисляем ширину шага
+                this._stepWidth = (this._slider.offsetWidth - this._thumb.offsetWidth) / (max - min);
                 
+                // Задаем начальное значение
+                if (initVal < min) {
+                    this.setVal(min);
+                } else if (initVal > max) {
+                    this.setVal(max);
+                } else {
+                    this.setVal(initVal);
+                }
+
+
+                // Устанавливаем обработчики событий
+                this._moveThumb = this._moveThumb.bind(this);
+
+                this._thumb.addEventListener("mousedown", () => {
+                    document.addEventListener("mousemove", this._moveThumb);
+                });
+
+                document.addEventListener("mouseup", () => {
+                    document.removeEventListener("mousemove", this._moveThumb);
+                });
+            }
+
+            setVal(val) {
+                this._val = val;
+                this._thumb.style.left = (val - this._options.min) * this._stepWidth + "px";
+            }
+
+            getVal() {
+                return this._val;
+            }
+
+            _moveThumb(e) {
+                // Вычисляем новое положение ползунка
+                let left = e.clientX - this._slider.getBoundingClientRect().left - this._thumb.offsetWidth / 2;
+
+                // Проверяем, не вылезли ли за пределы слайдера
                 if (left < 0) {
                     left = 0;
-                } else if (left > slider.offsetWidth - thumb.offsetWidth) {
-                    left = slider.offsetWidth - thumb.offsetWidth;
+                } else if (left > this._slider.offsetWidth - this._thumb.offsetWidth) {
+                    left = this._slider.offsetWidth - this._thumb.offsetWidth;
                 }
                 
-                thumb.style.left = left + "px";
-                val = Math.round(left / stepWidth + min);
-            }
+                // Задаем новое положение ползунка
+                this._thumb.style.left = left + "px";
 
-            function setVal(n) {
-                thumb.style.left = (n - min) * stepWidth + "px";
-            }
+                // Вычисляем новое значение
+                this._val = Math.round(left / this._stepWidth + this._options.min);
 
-            function getVal() {
-                return val;
+                // Вызываем коллбэк
+                this._onChange(this._val);
             }
         }
 
-        const slider = new Slider(document.getElementById("slider"), { min: 40, max: 120 });
+        const slider = new Slider(document.getElementById("slider"), { min: 80, max: 120, initVal: 0 }, (val) => { console.log(val); });
     </script>
 </body>
 </html>
